@@ -6,21 +6,18 @@ The motivation is to consider recommendation as a down-stream task of transforme
 
 But because most of the recommendation problems need hundreds of training epochs, so the training/inference is too slow for pratical use. Moreover, such a huge epoch also not fit the recommended setting on the BERT paper. (fine-tune epoch < 5, according to the overfit problem)
 
-    main.py
+`main.py`: for main flow control
 
-for train and eval control
+`model.py`: BERT merged BPR model
 
-    model.py
+`run.py`: train and evaluation functions
 
-BERT merged BPR model
+`dataset.py`:for dataset construction
 
-    dataset.py
+`sampler.py`: sampling utils
 
-for dataset construction
 
-    sampler.py
 
-sampling utils
 
 
 
