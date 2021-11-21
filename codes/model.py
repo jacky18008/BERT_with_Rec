@@ -19,7 +19,7 @@ class IEBPR(DistilBertPreTrainedModel):
         self.batch_size = model_config["batch_size"]
         if model_path is None:
             self.model_path = "distilbert-base-uncased"
-        self.distilbert = DistilBertModel(config) # = DistilBertModel.from_pretrained(model_path) # use distil bert as encoder
+        self.distilbert = DistilBertModel(config)  # use distil bert as encoder
         self.tokenizer = DistilBertTokenizerFast.from_pretrained(self.model_path)
         self.linear = nn.Linear(config.hidden_size, self.latent_dim, bias=False)
         self.init_weights()
@@ -71,7 +71,6 @@ class IEBPR(DistilBertPreTrainedModel):
         return users_emb, pos_emb, neg_emb
 
     def item_encode(self, input_ids, attention_mask, batch_item_id, **kwargs):
-        # print("input_ids", input_ids, "attention_mask", attention_mask)
         input_ids, attention_mask = input_ids.to(self.use_device), attention_mask.to(self.use_device)
         item_embed = self.distilbert(input_ids, attention_mask=attention_mask)[0][:, 0] # [CLS] embedding
         item_embed = self.linear(item_embed)

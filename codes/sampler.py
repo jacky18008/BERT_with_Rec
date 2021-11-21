@@ -8,7 +8,6 @@ try:
     from os.path import join, dirname
     path = join(dirname(__file__), "sampling.cpp")
     sampling = imp_from_filepath(path)
-    # sampling.seed(world.seed)
     print("Cpp extension loaded")
     sample_ext = True
 except:

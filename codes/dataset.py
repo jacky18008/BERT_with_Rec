@@ -45,7 +45,6 @@ class Triplet_Dataset(Dataset):
                     continue
                 self.texts[item_id] = text
         self.m_items = max(self.texts.keys())+1
-        # self.text_array = np.array(temp) # convert to array for easier indexing
                 
     def __len__(self):
         return self.num_train

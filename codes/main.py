@@ -38,25 +38,10 @@ if config["pre_trained_rec_model_path"] != "":
 else:
     model = IEBPR.from_pretrained(pre_trained_model, config=encoder_config, model_config=config, dataset=train_dataset).to(device)
 model.set_item_embed_table()
-# test_meta = model.tokenizer('aaaaa', return_tensors='pt', padding=True, truncation=True)
-# print(f"test tokenizer: {test_meta}")
-# print(f"test tokenizer: {model.item_encode(**test_meta)}")
+
 loss_fcn = model.bpr_loss
 optimizer = optim.Adam(model.parameters(), lr=config["lr"])
 weight_decay = config["reg_weight"]
-'''
-# print("model.parameters(): ")
-l1 = []
-for p in model.parameters():
-    if p.requires_grad:
-        l1.append(p)
-bert_model = BertModel.from_pretrained('distilbert-base-uncased')
-l2 = []
-for p in bert_model.parameters():
-    if p.requires_grad:
-        l2.append(p)
-assert len(l1) > len(l2)
-'''
 
 if __name__ == '__main__':
     if not args.eval_only:

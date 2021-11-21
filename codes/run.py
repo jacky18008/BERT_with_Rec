@@ -15,17 +15,14 @@ def sampler_setup(dataset, batch_size, device):
     users = users.to(device)
     
     users, posItems, negItems = shuffle(users, posItems, negItems)
-    # total_batch = len(users) // batch_size + 1
     return users, posItems, negItems
     
 def train(dataset, model, loss_fcn, optimizer, weight_decay, epoch, batch_size=32, device="cpu", neg_k=1):
-    # print("start training")
     users, posItems, negItems = sampler_setup(dataset, batch_size, device)
     model.train()
     total_loss = 0.
     total_batch = 0.
     for user_batch, pos_batch, neg_batch in tqdm(minibatch(users, posItems, negItems, batch_size=batch_size)):
-        # print("data len: ", len(user_batch), len(pos_batch), len(neg_batch))
         users_emb, pos_emb, neg_emb = model(user_batch, pos_batch, neg_batch)
         loss, reg_loss = loss_fcn(users_emb, pos_emb, neg_emb)
         reg_loss = reg_loss*weight_decay
@@ -35,7 +32,6 @@ def train(dataset, model, loss_fcn, optimizer, weight_decay, epoch, batch_size=3
         optimizer.step()
         total_loss += loss
         total_batch += 1
-    # print("total_batch: ", total_batch)
     return total_loss
 
 def test_one_batch(X, config):
@@ -75,12 +71,9 @@ def eval(dataset, model, train_all_pos, config, batch_size=32):
         users_list = []
         rating_list = []
         groundTrue_list = []
-        # auc_record = []
-        # ratings = []
         total_batch = len(users) // batch_size + 1
         print("start eval ...")
         for batch_users in tqdm(minibatch(users, batch_size=batch_size)):
-            # train_all_pos = dataset.getUserPosItems(batch_users)
             allPos = [train_all_pos[user] for user in batch_users]
             groundTrue = [testDict[u] for u in batch_users]
             batch_users_gpu = torch.Tensor(batch_users).long()
@@ -96,12 +89,6 @@ def eval(dataset, model, train_all_pos, config, batch_size=32):
             rating[exclude_index, exclude_items] = -(1<<10)
             _, rating_K = torch.topk(rating, k=max_K)
             rating = rating.cpu().numpy()
-            # aucs = [ 
-            #         utils.AUC(rating[i],
-            #                   dataset, 
-            #                   test_data) for i, test_data in enumerate(groundTrue)
-            #     ]
-            # auc_record.extend(aucs)
             del rating
             users_list.append(batch_users)
             rating_list.append(rating_K.cpu())
@@ -122,7 +109,6 @@ def eval(dataset, model, train_all_pos, config, batch_size=32):
         results['recall'] /= float(len(users))
         results['precision'] /= float(len(users))
         results['ndcg'] /= float(len(users))
-        # results['auc'] = np.mean(auc_record)
         if multicore == 1:
             pool.close()
         print(results)

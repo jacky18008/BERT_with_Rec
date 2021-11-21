@@ -3,7 +3,6 @@ from collections import defaultdict
 from tqdm import tqdm
 import json
 import sys
-# sys.setrecursionlimit(10**7) # recursion limit for k core
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--data_path')
