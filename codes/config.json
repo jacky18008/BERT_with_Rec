@@ -1,0 +1,15 @@
+{
+    "encoder": "DistilBert",
+    "latent_dim": 64, 
+    "lr": 0.001,
+    "topks": [10, 20],
+    "text_maxlen": 512,
+    "train_epochs": 100,
+    "batch_size": 32,
+    "reg_weight": 1e-4,
+    "device": "cuda:0",
+    "max_user": 3000, 
+    "max_item": 1500, 
+    "pre_trained_rec_model_path": "model.pt", 
+    "multicore_eval": 1
+}

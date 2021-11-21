@@ -1,0 +1,6 @@
+Cpp extension loaded
+num users:  609760
+num items:  300795
+use NORMAL distribution initilizer
+start sampling ...
+len of samples: 16463520
